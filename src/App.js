@@ -7,6 +7,10 @@ function SurpriseBox() {
   // Object to hold username visit counts
   const [visits, setVisits] = useState({});
 
+  /**
+   * Method to handle the form submit with given requirements.
+   * @param {object} e 
+   */
   function handleSubmit(e) {
     e.preventDefault();
     const username = e.target.username.value;
@@ -15,6 +19,11 @@ function SurpriseBox() {
     setVisits(updatedVisits);
   }
 
+  /**
+   * Method to decide winner or looser 
+   * @param {string} username 
+   * @returns boolean
+   */
   function isWinner(username) {
     const visitCount = visits[username] || 0;
     return WinnerNumberList.includes(visitCount);
@@ -37,5 +46,4 @@ function SurpriseBox() {
     </div>
   );
 }
-
 export default SurpriseBox;
