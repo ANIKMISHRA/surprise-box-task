@@ -1,49 +1,45 @@
 import React, { useState } from 'react';
 
-// Predefined winner number list
-const WinnerNumberList = [1, 2, 3];
-
-function SurpriseBox() {
-  // Object to hold username visit counts
-  const [visits, setVisits] = useState({});
-
-  /**
-   * Method to handle the form submit with given requirements.
-   * @param {object} e 
-   */
-  function handleSubmit(e) {
-    e.preventDefault();
-    const username = e.target.username.value;
-    const currentVisits = visits[username] || 0;
-    const updatedVisits = { ...visits, [username]: currentVisits + 1 };
-    setVisits(updatedVisits);
-  }
+/**
+ * Method to create a surprize box and confirm the winner and looser of surprize box.
+ * @returns node
+ */
+function App() {
+  // states
+  const [user, setUser] = useState('');
+  const [winners, setWinners] = useState([1, 3, 5]);
+  const [users, setUsers] = useState([]);
 
   /**
-   * Method to decide winner or looser 
-   * @param {string} username 
-   * @returns boolean
+   * Method to check the winner, looser and to stop re-enter of username.
+   * @returns string
    */
-  function isWinner(username) {
-    const visitCount = visits[username] || 0;
-    return WinnerNumberList.includes(visitCount);
-  }
+  const handleCheckWinner = () => {
+    if (users.includes(user)) {
+      alert(`${user}, you already participated in this Surprise box and you cannot re-enter.`);
+      return;
+    }
+    setUsers([...users, user]);
+
+    if (winners.includes(users.length + 1)) {
+      alert(`${user}, you are winner!`);
+      console.log(`${user}, you are winner!`);
+    } else {
+      alert(`${user}, sorry you are loser.`);
+      console.log(`${user}, sorry you are loser.`);
+    }
+  };
 
   return (
     <div>
       <h1>Surprise Box</h1>
-      <form onSubmit={handleSubmit}>
-        <label htmlFor="username">Username:</label>
-        <input id="username" name="username" type="text" />
-        <button type="submit">Submit</button>
-      </form>
-      {Object.keys(visits).map((username) => (
-        <p key={username}>
-          {username} has visited {visits[username]} times. {' '}
-          {isWinner(username) ? 'winner!' : 'loser!.'}
-        </p>
-      ))}
+      <input type="text" id="user-input" onChange={(e) => setUser(e.target.value)} />
+      <button onClick={handleCheckWinner}>
+        Check winner
+      </button>
     </div>
   );
 }
-export default SurpriseBox;
+
+export default App;
+
